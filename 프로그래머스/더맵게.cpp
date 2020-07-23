@@ -1,51 +1,47 @@
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <iostream>
+#include<queue>
 
 using namespace std;
 
+//¿ì¼±¼øÀ§Å¥!!!!!!!!!!!!!!!!!!
 int solution(vector<int> scoville, int K) {
 	int answer = 0;
 	vector<int> less;
-	vector<int> greater;
+	vector<int> great;
 	int a, b, i;
 
 
-	//Kë³´ë‹¤ ì‘ì€ ê°’ë“¤ë§Œ lessì— ì €ì¥
+	//Kº¸´Ù ÀÛÀº °ªµé¸¸ less¿¡ ÀúÀå
 	for (i = 0; i<scoville.size(); i++) {
 		if (scoville[i] < K) {
 			less.push_back(scoville[i]);
 		}
-		else greater.push_back(scoville[i]);
+		else great.push_back(scoville[i]);
 	}
 
-	sort(less.begin(), less.end());
+	priority_queue<int, vector<int>, greater<int>> pri_q(less.begin(), less.end());
 
-	if (less.size() == 0) return 0;
+	if (pri_q.size() == 0) return 0;
 
-	while (less.size() > 1) {
-		a = less[0], b = less[1]; //ì œì¼ ì‘ì€ ì›ì†Œ 2ê°œ
-		less.erase(less.begin(), less.begin() + 2);
+	while (pri_q.size() > 1) {
+		a = pri_q.top(); pri_q.pop();
+		b = pri_q.top(); pri_q.pop();//Á¦ÀÏ ÀÛÀº ¿ø¼Ò 2°³
 		a = a + b * 2;
-		if (a < K) {//ìˆœí™˜í•´ì„œ lessì˜ ì ë‹¹í•œ ìë¦¬ì— insert
-			for (i = 0; i<less.size()&& less[i] < a; i++);
-			less.insert(less.begin() + i, a);
+		if (a < K) {//¼øÈ¯ÇØ¼­ lessÀÇ Àû´çÇÑ ÀÚ¸®¿¡ insert
+			pri_q.push(a);//ÀÚµ¿À¸·Î Á¤·ÄµÇ¾î µé¾î°¡´Â ±¸³ª
+			//for (i = 0; i<less.size()&& less[i] < a; i++);
+			//less.insert(less.begin() + i, a);
 		}
-		else greater.push_back(a);
+		else great.push_back(a);
 		answer++;
 	}
 
-	if (less.size() == 1) {
-		if (greater.size() > 0) return answer + 1;
+	if (pri_q.size() == 1) {
+		if (great.size() > 0) return answer + 1;
 		else return -1;
 	}
 
 	return answer;
 }
 
-int main() {
-	cout << solution({ 1, 2, 3, 9, 10, 12 }, 7);
-
-	system("pause");
-}
