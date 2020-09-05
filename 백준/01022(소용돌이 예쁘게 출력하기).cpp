@@ -37,7 +37,7 @@ int main() {
 			m[0][0] = pow(2 * c1 - 1, 2) + (c1 - r1);
 		}
 		else {
-			m[0][0] = pow(2 * abs(c1) + 1, 2) - 2 * abs(c1) - (c1 - r1);
+			m[0][0] = pow(2 * abs(c1) + 1, 2) - 2 * abs(c1) + (c1 + r1);
 		}
 	}
 	//cout << m[0][0];
@@ -58,7 +58,7 @@ int main() {
 				}
 			}
 			else {
-				if (abs(idx_c) <= abs(idx_r)) { //다른 껍질?에 있을 때
+				if (idx_r==idx_c-1 || abs(idx_c) <= abs(idx_r)) { //다른 껍질?에 있을 때
 					m[i][0] = m[i - 1][0] + (7 + abs(idx_r) * 8);
 				}
 				else {//같은 껍질
